@@ -11,8 +11,7 @@
 - [Experiment Naming & Outputs](#experiment-naming--outputs)
 - [Figure Reproduction](#figure-reproduction)
 - [Configuration & Reproducibility](#configuration--reproducibility)
-- [Results (Placeholders)](#results-placeholders)
-- [Open Science (Code/Data/Weights)](#open-science-codedataweights)
+- [Open Science (Code/Data)](#open-science-codedata)
 
 
 ## Repository Structure
