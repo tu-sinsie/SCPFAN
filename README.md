@@ -186,7 +186,6 @@ eval:
 
 ## Open Science (Code/Data/Weights)
 - Archive **code, datasets, and pretrained weights** with a permanent DOI (e.g., **Zenodo** / **Figshare**).  
-- Include the links in your paper **abstract** and this README, and provide a **REPRODUCE.md** with step‑by‑step scripts.
 
 
 ---
