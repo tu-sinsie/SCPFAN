@@ -184,8 +184,15 @@ eval:
 ---
 
 
-## Open Science (Code/Data/Weights)
-- Archive **code, datasets, and pretrained weights** with a permanent DOI (e.g., **Zenodo** / **Figshare**).  
+## Open Science (Code/Data)
+
+- Archive **code, datasets, and pretrained weights** with permanent DOIs.
+
+**Code DOI:** [10.5281/zenodo.16892699](https://doi.org/10.5281/zenodo.16892699)  
+**Data DOI:** _to be assigned_  
+
+
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.16892699.svg)](https://doi.org/10.5281/zenodo.16892699)
 
 
 ---
