@@ -11,7 +11,7 @@
 - [Experiment Naming & Outputs](#experiment-naming--outputs)
 - [Figure Reproduction](#figure-reproduction)
 - [Configuration & Reproducibility](#configuration--reproducibility)
-- [Open Science (Code/Data)](#open-science-codedata)
+- [Open Science (Code)](#open-science-code)
 
 
 ## Repository Structure
@@ -188,7 +188,6 @@ eval:
 - Archive **code, datasets, and pretrained weights** with permanent DOIs.
 
 **Code DOI:** [10.5281/zenodo.16892699](https://doi.org/10.5281/zenodo.16892699)  
-**Data DOI:** _to be assigned_  
 
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.16892699.svg)](https://doi.org/10.5281/zenodo.16892699)
