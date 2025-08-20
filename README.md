@@ -183,9 +183,9 @@ eval:
 ---
 
 
-## Open Science (Code/Data)
+## Open Science (Code)
 
-- Archive **code, datasets, and pretrained weights** with permanent DOIs.
+- Archive **code with permanent DOIs.
 
 **Code DOI:** [10.5281/zenodo.16892699](https://doi.org/10.5281/zenodo.16892699)  
 
