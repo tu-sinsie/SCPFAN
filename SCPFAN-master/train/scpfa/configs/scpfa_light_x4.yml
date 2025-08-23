@@ -1,0 +1,36 @@
+model: 'scpfa'
+## parameters for plain
+scale: 4
+rgb_range: 255
+colors: 3
+m_scpfa: 24
+c_scpfa: 60
+n_share: 1
+r_expand: 2
+act_type: 'relu'
+window_sizes: [4, 8, 16]
+pretrain:
+
+attention_type: "SimAM"
+## parameters for model training
+patch_size: 256
+batch_size: 128
+data_repeat: 80
+data_augment: 1
+
+epochs: 1000
+lr: 0.0002
+decays: [250, 400, 450, 475, 500]
+gamma: 0.5
+log_every: 100
+test_every: 10
+log_path: "./experiments"
+log_name:
+
+## hardware specification
+gpu_ids: [0, 1]
+threads: 16
+
+## data specification
+data_path: '/home/psdz/project//SR_datasets'
+eval_sets: ['Set5', 'Set14', 'B100', 'Urban100', 'Manga109']

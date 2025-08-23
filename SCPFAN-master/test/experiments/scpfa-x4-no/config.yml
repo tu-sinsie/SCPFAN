@@ -1,0 +1,45 @@
+act_type: relu
+attention_type: ''
+batch_size: 128
+c_scpfa: 60
+colors: 3
+config: ./configs/scpfa_light_x4.yml
+data_augment: 1
+data_path: SR_datasets
+data_repeat: 80
+decays:
+- 250
+- 400
+- 450
+- 475
+- 500
+epochs: 1000
+eval_sets:
+- Set5
+- Set14
+- B100
+- Urban100
+- Manga109
+gamma: 0.5
+gpu_ids:
+- 0
+- 1
+log_every: 100
+log_name: null
+log_path: ./experiments
+lr: 0.0002
+m_scpfa: 24
+model: scpfa
+n_share: 1
+patch_size: 256
+pretrain: null
+r_expand: 2
+resume: null
+rgb_range: 255
+scale: 4
+test_every: 10
+threads: 16
+window_sizes:
+- 4
+- 8
+- 16
