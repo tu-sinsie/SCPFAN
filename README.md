@@ -1,6 +1,7 @@
 
 
 ## Table of Contents
+- [Table of Contents](#table-of-contents)
 - [Repository Structure](#repository-structure)
 - [Environment Setup](#environment-setup)
 - [Datasets](#datasets)
@@ -8,9 +9,9 @@
   - [Train](#train)
   - [Resume Training](#resume-training)
   - [Evaluate / Inference](#evaluate--inference)
-- [Experiment Naming & Outputs](#experiment-naming--outputs)
+- [Experiment Naming \& Outputs](#experiment-naming--outputs)
 - [Figure Reproduction](#figure-reproduction)
-- [Configuration & Reproducibility](#configuration--reproducibility)
+- [Configuration \& Reproducibility](#configuration--reproducibility)
 - [Open Science (Code)](#open-science-code)
 
 
@@ -22,10 +23,11 @@ figure/                          # Figure scripts for efficiency/accuracy plots
   ├─ matplotlib(x3).py
   └─ params vs inference.py
 
-experiments/                     # Per-experiment outputs (logs, ckpts, metrics)
+test/experiments/                     # Per-experiment outputs (logs, ckpts, metrics)
   ├─ scpfa-x2-pfa/
-  ├─ scpfa-x4-6/  scpfa-x4-12/  scpfa-x4-42/  scpfa-x4-48/  scpfa-x4-54/  scpfa-x4-60/
-  ├─ scpfa-x4-no/  scpfa-x4-pfa/  scpfa-x4-eca/  scpfa-x4-cbam/
+  ├─ scpfa-x4-6/  scpfa-x4-12/ 
+  ├─ scpfa-x4-no/ scpfa-x4-eca/
+  ├─ scpfa-x4-cbam/
   └─ ...
 
 train/scpfa/                     # Training & model code
@@ -43,12 +45,11 @@ train/scpfa/                     # Training & model code
   ├─ environment.yml             # Conda environment (recommended)
   ├─ requirements.txt            # pip requirements
   ├─ train.py                    # General training entry
-  ├─ train_scpfa.py              # SCPFAN-specific entry (if used)
   └─ utils.py
 ```
 
 > **Naming convention**:  
-> `scpfa-x4-54` → scale ×4, a variant with depth/stages 54.  
+> `scpfa-x4-6` → scale ×4, a variant with depth/stages 6.  
 > `-no` → without attention (ablation); `-pfa` → parameter‑free attention; `-eca`/`-cbam` → comparison baselines.
 
 ---
@@ -60,7 +61,7 @@ conda env create -f train/scpfa/environment.yml
 conda activate scpfa
 
 # Or pip
-pip install -r train/scpfa/requirements.txt
+pip install -r requirements.txt
 ```
 > Python ≥ 3.8 is recommended. Install CUDA/cuDNN per your GPU driver.
 
@@ -84,7 +85,7 @@ Example layout:
    └─ Manga109
 ```
 
-Configure paths via configs or CLI flags `--data_root` and `--bench_root`.
+Configure paths via configs file.
 
 ---
 
@@ -92,36 +93,19 @@ Configure paths via configs or CLI flags `--data_root` and `--bench_root`.
 
 ### Train
 ```bash
-cd train/scpfa
-
-python train.py \
-  --scale 4 \
-  --exp scpfa-x4-54 \
-  --data_root /path/to/DIV2K \
-  --bench_root /path/to/benchmarks
-```
-> If using the dedicated entry:
-```bash
-python train_scpfa.py --scale 4 --exp scpfa-x4-pfa \
-  --data_root /path/to/DIV2K --bench_root /path/to/benchmarks
+python train.py --config train/scpfa/configs/scpfa_x4.yml
 ```
 
 ### Resume Training
 ```bash
-python train.py \
-  --scale 4 \
-  --exp scpfa-x4-54 \
-  --resume ../experiments/scpfa-x4-54/checkpoints/last.pth
+python train.py --config train/scpfa/configs/scpfa_x4.yml \
+  --resume ./experiments/scpfa-x4/checkpoints/last.pth
 ```
 
 ### Evaluate / Inference
 ```bash
-cd train/scpfa
-
-python models/test.py \
-  --scale 4 \
-  --ckpt ../experiments/scpfa-x4-54/checkpoints/last.pth \
-  --save_dir ../experiments/scpfa-x4-54/results
+python test.py  --config train/scpfa/configs/scpfa_x4.yml \
+  --ckpt ./experiments/scpfa-x4/checkpoints/last.pth
 ```
 
 ---
@@ -132,8 +116,6 @@ python models/test.py \
   - `logs/` — training/eval logs (txt/csv/json)
   - `results/` — images & metrics on benchmarks
   - `config.yaml` — snapshot of hyperparameters
-- Recommended metrics: **PSNR/SSIM (Y channel)**, and optionally **LPIPS**.
-- Always record **Params / FLOPs / Latency** for fair efficiency comparison.
 
 ---
 
@@ -163,21 +145,42 @@ python "figure/matplotlib(x3).py" --log experiments/summary_x3.csv --out figures
 
 **Example minimal YAML (optional):**
 ```yaml
-# train/scpfa/configs/x4_scpfa54.yaml
+model: 'scpfa'
+## parameters for plain
 scale: 4
-data_root: /path/to/DIV2K
-bench_root: /path/to/benchmarks
-train:
-  batch_size: 16
-  epochs: 1000
-  lr: 2.0e-4
-  seed: 42
-model:
-  name: scpfa_network
-  variant: x4-54
-eval:
-  benchmarks: [Set5, Set14, B100, Urban100, Manga109]
-  save_images: true
+rgb_range: 255
+colors: 3
+m_scpfa: 36
+c_scpfa: 180
+n_share: 0
+r_expand: 2
+act_type: 'relu'
+window_sizes: [4, 8, 16]
+pretrain:
+attention_type: "SimAM"
+
+## parameters for model training
+patch_size: 192
+batch_size: 64
+data_repeat: 80
+data_augment: 1
+
+epochs: 1000
+lr: 0.0002
+decays: [250, 400, 450, 475, 500]
+gamma: 0.5
+log_every: 100
+test_every: 1
+log_path: "./experiments"
+log_name:
+
+## hardware specification
+gpu_ids: [0,1]
+threads: 8
+
+## data specification
+data_path: '/home/psdz/project/SR_datasets'
+eval_sets: ['Set5', 'Set14', 'B100', 'Urban100', 'Manga109']
 ```
 
 ---
